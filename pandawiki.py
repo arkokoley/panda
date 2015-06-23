@@ -5,7 +5,7 @@ predifined1 = "panda what is "
 predifined2 = "Panda what is "
 def wikisearch(keywords):							#defining new function
 		try:										#ironing out the errors	
-			summary = wikipedia.summa	ry(keywords)
+			summary = wikipedia.summary(keywords)
 		except wikipedia.exceptions.DisambiguationError as disambiguation: #input can mean many things: eg. panda what is mercury
 			print("Oops, did you mean one of the following?")
 			for i in range(0, len(disambiguation.options)):
