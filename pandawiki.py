@@ -8,12 +8,12 @@ def wikisearch(keywords):							#defining new function
 			print("Oops, did you mean one of the following?")
 			for i in range(0, len(disambiguation.options)):
 				print "%d) " %(i+1) + disambiguation.options[i]
-			option_number=input("If no option matches with your keyword, press enter. Else enter the option number:  ")
-			if(option_number == 0):
+			option_number=input("If no option matches with your keyword, press '0'. Else enter the option number:  ")
+			if(option_number==KEY_ENTER	):
 				exit()
 			else:
 				print disambiguation.options[option_number-1] + " selected:"
-				wikisearch(disambiguation.options[option_number-1]) 		#running new query
+				wikisearch(disambiguation.options[option_number-1])
 				exit()
 		except wikipedia.exceptions.PageError as error:
 			print "'"+ user_query + "'"+  " does not match any pages. Try another query!"
