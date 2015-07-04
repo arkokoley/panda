@@ -11,7 +11,7 @@ def create_url(url, api_key, location_id, city_name):     #Calling function
 		url=url+"id="+location_id+"&"
 	if(city_name!=""):
 		url=url+"q="+city_name+"&"
-	if(location_id==0)and(city_name=""):
+	if(location_id==0)and(city_name==""):
 		print "Something Wrong with your input."
 		exit()
 	url=url+"APPID="+api_key
