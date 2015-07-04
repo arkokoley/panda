@@ -74,6 +74,14 @@ def json_parsing_today_time(json_obj, time):        #parse to give output at nea
 				print "Humidity at "+time+" is expected to be "+str(each_day['main']['humidity'])+"%"
 				exit()	
 	
+def json_parsing_date(avg_json_obj, number_of_days):
+	print "Weather conditions are expected to be "+ avg_json_obj['list'][number_of_days]['weather'][0]['description']+ " "+str(number_of_days)+" days from today."
+	print "Max temperature is expected to be: "+str(avg_json_obj['list'][number_of_days]['temp']['max'])+" degree C "+str(number_of_days)+" days from today."
+	print "Min temperature is expected to be: "+str(avg_json_obj['list'][number_of_days]['temp']['min'])+" degree C "+str(number_of_days)+" days from today."
+	print "Average humidity is expected to be "+str(avg_json_obj['list'][number_of_days]['humidity'])+"% "+str(number_of_days)+" days from today."
+		
+
+
 def json_parsing_current(current_json_obj):  
 	print "Current weather conditions at "+current_json_obj['name']+": "+current_json_obj['weather'][0]['description']
 	print "Current Temperature is: "+str(current_json_obj['main']['temp'])+" degree C"
@@ -119,7 +127,7 @@ def json_parsing_dayaftertomorrow(json_obj):
 #json_parsing_today_time(json_obj, "03:00")
 #print find_nearest_time("23:30")
 print "Choose one of the following options: "
-print "1)Give current weather.\n2)Give average weather data for today.\n3)Give tomorrows weather\n4)Give Day-after-tomorrows weather\n5)Give weather at time: HH:MM"
+print "1)Give current weather.\n2)Give average weather data for today.\n3)Give tomorrow's weather\n4)Give Day-after-tomorrow's weather\n5)Give weather at time: HH:MM\n6)Give weather after following number of days:"
 choice=input("Enter your choice: ")
 if(choice==1):
 	url_for_current=create_url(base_url_for_current, api_key, location_id,city_name)
@@ -147,5 +155,9 @@ elif(choice==5):
 	response=requests.get(url)
 	json_obj=response.json()
 	json_parsing_today_time(json_obj, time)
-	
-
+elif(choice==6):
+	number_of_days=input("Enter days: ")
+	url_for_average = create_url(base_url_for_avg, api_key, location_id,city_name)+"&cnt=14"
+	response_for_average= requests.get(url_for_average)
+	avg_json_obj=response_for_average.json()
+	json_parsing_date(avg_json_obj, number_of_days)
