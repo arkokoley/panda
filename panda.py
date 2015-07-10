@@ -2,6 +2,7 @@
 import sys
 from nlp import *
 from pandawiki import *
+from proj import *
 
 (t,word) = getMeaning(sys.argv)
 if(t == 1):
