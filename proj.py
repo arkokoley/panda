@@ -16,5 +16,5 @@ def dictionary(i):
 		print 'Word not found'
 	
 if __name__ == "__main__":
-	dictionary(i)
+	dictionary(sys.argv)
 	
