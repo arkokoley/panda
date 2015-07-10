@@ -9,7 +9,7 @@ def getMeaning(Input):
     t = 1
 
 # Looks for words that need to be found in dict
-    d = "mean meaning".split()
+    d = "the of mean meaning".split()
     m = [x for x in p if x not in list(set(d).intersection(p))]
     if(p != m):
         t = 2
