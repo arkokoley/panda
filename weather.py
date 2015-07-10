@@ -8,7 +8,7 @@ base_url="http://api.openweathermap.org/data/2.5/forecast/city?"
 base_url_for_avg="http://api.openweathermap.org/data/2.5/forecast/daily?"
 base_url_for_current = "http://api.openweathermap.org/data/2.5/weather?"
 city_name=raw_input("Enter your city name: ")
-def create_url(url, api_key, location_id, city_name):     #Calling function
+def create_url(url, api_key, location_id, city_name):     #Function to create the url call
 	if(location_id!=0):
 		url=url+"id="+location_id+"&"
 	if(city_name!=""):
@@ -21,7 +21,7 @@ def create_url(url, api_key, location_id, city_name):     #Calling function
 	return url
 
 
-def detailed_json_parsing_today(json_obj):				#Gives weather for every 3 hrs today
+def detailed_json_parsing_today(json_obj):				#Gives weather for every 3 hrs today will be useful for giving weather when time is given
 	todays_date=json_obj['list'][0]['dt_txt'][0:11]
 	print "Todays detailed weather at "+json_obj['city']['name']+": "
 	min_temp=1000
@@ -37,7 +37,52 @@ def detailed_json_parsing_today(json_obj):				#Gives weather for every 3 hrs tod
 			if(each_day['main']['temp_min']<min_temp):
 				min_temp=each_day['main']['temp_min']
 
-def json_parsing_current(current_json_obj):
+def find_nearest_time(time):    #Get time nearest to asked time that is divisible by 3
+	new_time=time[0:2]
+	final_time=int(new_time)
+	diff=final_time%3
+	if(diff==0):
+		if(new_time!="24"):
+			return str(new_time)+":00:00"
+		else:
+			return "00:00:00"
+	elif(diff==1):
+		final_time=final_time-1
+		if(final_time<10):
+			return "0"+str(final_time)+":00:00"
+		else:
+			return str(final_time)+":00:00"
+	elif(diff==2):
+		final_time=final_time+1
+		if(final_time<10):
+			return "0"+str(final_time)+":00:00"
+		else:
+			if(str(final_time)!="24"):
+				return str(final_time)+":00:00"
+			else:
+				return "00:00:00"
+
+def json_parsing_today_time(json_obj, time):        #parse to give output at nearest time
+	new_time=find_nearest_time(time)
+	todays_date=json_obj['list'][0]['dt_txt'][0:11]
+	for each_day in json_obj['list']:
+		if(new_time!="00:00:00"):
+			recent_time=each_day['dt_txt'][11:19]
+			if(recent_time==new_time):
+				print "Weather conditions at "+time+" are expected to be "+str(each_day['weather'][0]['main'])
+				print "Temperature at "+time+" is expected to be "+ str(each_day['main']['temp'])
+				print "Humidity at "+time+" is expected to be "+str(each_day['main']['humidity'])+"%"
+				exit()	
+	
+def json_parsing_date(avg_json_obj, number_of_days):
+	print "Weather conditions are expected to be "+ avg_json_obj['list'][number_of_days]['weather'][0]['description']+ " "+str(number_of_days)+" days from today."
+	print "Max temperature is expected to be: "+str(avg_json_obj['list'][number_of_days]['temp']['max'])+" degree C "+str(number_of_days)+" days from today."
+	print "Min temperature is expected to be: "+str(avg_json_obj['list'][number_of_days]['temp']['min'])+" degree C "+str(number_of_days)+" days from today."
+	print "Average humidity is expected to be "+str(avg_json_obj['list'][number_of_days]['humidity'])+"% "+str(number_of_days)+" days from today."
+		
+
+
+def json_parsing_current(current_json_obj):  
 	print "Current weather conditions at "+current_json_obj['name']+": "+current_json_obj['weather'][0]['description']
 	print "Current Temperature is: "+str(current_json_obj['main']['temp'])+" degree C"
 	print "Current humidity is: "+str(current_json_obj['main']['humidity'])+"%"
@@ -79,8 +124,10 @@ def json_parsing_dayaftertomorrow(json_obj):
 #json_parsing_today(avg_json_obj)					#when you need average data for today
 #json_parsing_tomorrow(avg_json_obj) 				#when you need average data for tomorrow
 #json_parsing_dayaftertomorrow(avg_json_obj)		#when you need average data for dayaftertomorrow
+#json_parsing_today_time(json_obj, "03:00")
+#print find_nearest_time("23:30")
 print "Choose one of the following options: "
-print "1)Give current weather.\n2)Give average weather data for today.\n3)Give tomorrows weather\n4)gove Day-after-tomorrows weather"
+print "1)Give current weather.\n2)Give average weather data for today.\n3)Give tomorrow's weather\n4)Give Day-after-tomorrow's weather\n5)Give weather at time: HH:MM\n6)Give weather after following number of days:"
 choice=input("Enter your choice: ")
 if(choice==1):
 	url_for_current=create_url(base_url_for_current, api_key, location_id,city_name)
@@ -102,3 +149,15 @@ elif(choice==4):
 	response_for_average= requests.get(url_for_average)
 	avg_json_obj=response_for_average.json()
 	json_parsing_dayaftertomorrow(avg_json_obj)
+elif(choice==5):
+	time=raw_input("Enter time HH:MM\n")
+	url=create_url(base_url, api_key, location_id,city_name)
+	response=requests.get(url)
+	json_obj=response.json()
+	json_parsing_today_time(json_obj, time)
+elif(choice==6):
+	number_of_days=input("Enter days: ")
+	url_for_average = create_url(base_url_for_avg, api_key, location_id,city_name)+"&cnt=14"
+	response_for_average= requests.get(url_for_average)
+	avg_json_obj=response_for_average.json()
+	json_parsing_date(avg_json_obj, number_of_days)
