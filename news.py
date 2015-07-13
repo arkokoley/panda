@@ -56,6 +56,7 @@ def parsefornews(url):
 			print str(numberofnews)+") "+item["title"]
 			print item["description"]
 			print "For more information right click and open: "+item["link"]+"\n"
+print "Choose one of the following:\n1)General News\n2)International\n3)National\n4)Business\n6)City\n7)sci-tech\n8)Entertainment"
 choice=input("Enter choice: ")
 url=createurl(url, choice)
 print url
