@@ -4,7 +4,7 @@ import sys
 
 def getMeaning(Input):
 # Looks for words that need to be searched in wiki
-    s = "what does is about tell me".split()
+    s = "what does is about tell me who".split()
     p = [x for x in Input[1:] if x not in list(set(s).intersection(Input))]
     t = 1
 
