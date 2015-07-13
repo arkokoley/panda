@@ -20,7 +20,7 @@ def createurl(url, choice):
 	elif choice==5:
 		print "Displaying latest sports news."
 		url=url+"sport/"
-	elif choice==6:
+	elif choice==6:					#do we need this? if yes you need to ask for the cities(There are limited cities)
 		url=url+"news/cities/"
 	elif choice==7:
 		print "Displaying latest science and technology news."
@@ -44,9 +44,10 @@ def parsefornews(url):
 			print item["description"]
 			print "For more information right click and open: "+item["link"]+"\n"
 
-
+def createandparse(url, choice):			# Call this function only with input as choice, url is by default 'http://www.thehindu.com/'"
+	url=createurl(url, choice)
+	parsefornews(url)
+	
 print "Choose one of the following:\n1)General News\n2)International\n3)National\n4)Business\n6)City\n7)sci-tech\n8)Entertainment\n9)Cricket\n0)To exit"
 choice=input("Enter choice: ")
-url=createurl(url, choice)
-print url
-parsefornews(url)
+createandparse(url, choice)
