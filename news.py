@@ -1,16 +1,5 @@
 import feedparser
 url="http://www.thehindu.com/"			
-		
-def parseforinternational(url):
-	url=url+"news/international/?service=rss"
-	numberofnews=0
-	feed=feedparser.parse(url)
-	for item in feed["items"]:
-		if numberofnews<10:
-			numberofnews+=1
-			print str(numberofnews)+") "+item["title"]
-			print item["description"]
-			print "For more information right click and open: "+item["link"]+"\n"
 
 def createurl(url, choice):
 	if (choice>9 or choice<1):
