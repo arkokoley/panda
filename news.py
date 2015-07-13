@@ -24,7 +24,10 @@ def parseforinternational(url):
 			print "For more information right click and open: "+item["link"]+"\n"
 
 def createurl(url, choice):
-	if choice==1:
+	if (choice>9 or choice<1):
+		print "Thank you for using the news app."
+		exit()
+	elif choice==1:
 		url=url+"news/"
 	elif choice==2:
 		url=url+"international/"
@@ -42,8 +45,6 @@ def createurl(url, choice):
 		url=url+"entertainment/"
 	elif choice==9:
 		url=url+"sport/cricket/"
-	elif choice==10:
-		url=url+"sport/football/"
 	url+="?service=rss"
 	return url
 
@@ -56,7 +57,7 @@ def parsefornews(url):
 			print str(numberofnews)+") "+item["title"]
 			print item["description"]
 			print "For more information right click and open: "+item["link"]+"\n"
-print "Choose one of the following:\n1)General News\n2)International\n3)National\n4)Business\n6)City\n7)sci-tech\n8)Entertainment"
+print "Choose one of the following:\n1)General News\n2)International\n3)National\n4)Business\n6)City\n7)sci-tech\n8)Entertainment\n9)Cricket\n0)To exit"
 choice=input("Enter choice: ")
 url=createurl(url, choice)
 print url
