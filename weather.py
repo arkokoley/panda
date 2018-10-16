@@ -1,6 +1,8 @@
 import requests
 from json import load, dumps
-api_key="3bc41d6d4311aebfda7147242d5cf39f"
+#Add key
+api_key= ####
+
 #location_id="524901"
 location_id=0
 city_name=""
